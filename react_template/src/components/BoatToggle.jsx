@@ -1,18 +1,19 @@
 import React from 'react';
 
-function BoatToggle({ boats, toggleBoatVisibility }) {
+function BoatToggle({ boats, onToggle}) {
+  console.log(boats);
   return (
     <div>
       <h2>Toggle Boats</h2>
-      {boats?.map(({boatID, isVisible}) => (
-        <div key={boatID}>
+      {Object.keys(boats)?.map((id) => (
+        <div key={id}>
           <label>
             <input
               type="checkbox"
-              checked={isVisible}
-              onChange={() => toggleBoatVisibility(Number(boatID))}
+              checked={boats[id]}
+              onChange={() => onToggle(id)}
             />
-            Boat {boatID}
+            Boat {id}
           </label>
         </div>
       ))}

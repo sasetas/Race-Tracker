@@ -1,5 +1,5 @@
 // src/App.jsx
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Map from './components/Map';
 import Timeline from './components/Timeline';
 import useRaceData from './utils/useRaceData';
@@ -9,32 +9,23 @@ function App() {
   const { raceData, minTime, maxTime } = useRaceData();
   const [currentTime, setCurrentTime] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [boatsVisible, setBoatsVisible] =   useState();
+  const [boatsVisible, setBoatsVisible] = useState({});
   
   useEffect(() => {
-    console.log(raceData);
     if (raceData && raceData.boats) {
-      const boatsIDs = Object.keys(raceData.boats)
-      setBoatsVisible(
-        raceData.boats.reduce((acc, boat) => {
-          acc[boat.id] = true; // Default all boats to visible
-          return acc;
-        }, {})
-      );
-      setBoatsVisible(
-        boatsIDs.map((id) => { return {
-          boatID: id,
-          isVisible: true // Default all boats to visible;
-        }
-        }, {})
-      );
+      const boatsIDs = Object.keys(raceData.boats);
+      var acc = {};
+      boatsIDs.forEach((id) => {
+        acc[id] = true; // Default all boats to visible
+      });
+      setBoatsVisible(acc);
     }
   }, [raceData]);
   
-  const toggleBoatVisibility = (boatId) => {
+  const toggleBoatVisibility = (id) => {
     setBoatsVisible((prevBoats) => ({
       ...prevBoats,
-      isVisible: !prevBoats.isVisible,
+      [id]: !prevBoats[id],
     }));
   };
 
@@ -63,6 +54,7 @@ function App() {
       <div className="flex-1 relative">
         <Map
           boats={raceData.boats}
+          boatsToDraw={Object.keys(boatsVisible).filter((id) => boatsVisible[id] === true)}
           bounds={raceData.metadata.geographic_bounds}
           currentTime={currentTime}
         />
