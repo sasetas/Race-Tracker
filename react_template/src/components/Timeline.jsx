@@ -10,13 +10,18 @@ function Timeline({
   onPlayPause,
 }) {
   const animationRef = useRef();
+  const speed = 20; // seconds
+  const fps = 60;
+  useEffect(() => {
+    onTimeChange(minTime);
+  }, [minTime]);
 
   useEffect(() => {
     if (isPlaying) {
       const animate = () => {
         onTimeChange(time => {
           if (!time) return minTime;
-          const newTime = new Date(time.getTime() + 500); // Update every 500ms
+          const newTime = new Date(time.getTime() + (speed*1000/fps)); // Update every 1000ms
           if (newTime > maxTime) {
             onPlayPause();
             return maxTime;
