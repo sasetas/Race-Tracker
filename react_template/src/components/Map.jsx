@@ -5,17 +5,12 @@ import { Icon } from "leaflet";
 function Map({ boats, boatsToDraw, boatColors, currentTimeRaceData }) {
   return (
     <>
-    {/* <MapContainer center={center} zoom={12} className="w-full h-full">
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      /> */}
+    
       {boatsToDraw.map((id) => (
           <DrawBoatCourse
           boatData={boats[id]} boatColor={boatColors[id]} currentTimeBoatData={currentTimeRaceData[id]}
         />
       ))}
-    {/* </MapContainer> */}
     </>
   );
 }
