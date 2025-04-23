@@ -34,7 +34,7 @@ function BoatsInfoPanel({boatColors, visibleBoats, onToggleBoat, currentTimeRace
   const toRad = (value) => value * Math.PI / 180;
 
   return (
-    <div className="absolute z-[1001] top-4 right-4 bg-white p-4 rounded shadow-lg max-h-[80vh] overflow-y-auto">
+    <div className="absolute z-[1001] top-20 right-4 bg-gray-900 opacity-80 p-4 rounded shadow-lg max-h-[80vh] overflow-y-auto text-white">
       <h2 className="text-lg font-bold mb-4">Boats Information</h2>
       <div className="space-y-4">
         {Object.keys(currentTimeRaceData)?.map(id => (
@@ -51,7 +51,7 @@ function BoatsInfoPanel({boatColors, visibleBoats, onToggleBoat, currentTimeRace
             <div className="flex-1">
               <div className="flex items-center justify-between">
                 <span className="font-medium">{id}</span>
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-gray-200">
                   {currentTimeRaceData[id].speed} km/h
                 </span>
               </div>

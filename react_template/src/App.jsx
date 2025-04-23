@@ -1,5 +1,5 @@
 // src/App.jsx
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Map from "./components/Map";
 import Timeline from "./components/Timeline";
 import useRaceData from "./utils/useRaceData";
@@ -13,6 +13,8 @@ function App() {
   const [boatsVisible, setBoatsVisible] = useState({});
   const [boatColors, setBoatColors] = useState({});
   const [center, setCenter] = useState(null);
+
+  let mapRef = useRef();
 
   useEffect(() => {
     if (raceData && raceData.boats) {
@@ -95,6 +97,10 @@ function App() {
     }));
   };
 
+  useEffect(() => {
+    console.log("map.current", mapRef);
+  },[mapRef])
+
   if (!raceData || !minTime || !maxTime || !center) {
     return (
       <div className="h-screen w-screen flex items-center justify-center">
@@ -104,11 +110,19 @@ function App() {
   } else {
     return (
       <div className="h-screen w-screen flex flex-col">
-        <div className="p-4 bg-blue-900 text-white">
+        <div className="p-4 bg-gray-900 opacity-70 text-white absolute z-[1000] w-full">
           <h1 className="text-2xl font-bold">Boat Race Tracker</h1>
         </div>
         <div className="flex-1 relative">
-          <MapContainer center={center} zoom={12} className="w-full h-full">
+          <MapContainer 
+              whenCreated={map => {
+                mapRef.current = map;
+              }}
+              center={center} zoom={12} rotate={true} touchRotate={true} rotateControl={
+                {
+                  closeOnZeroBearing: false
+                }
+              } className="w-full h-full">
             <TileLayer
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

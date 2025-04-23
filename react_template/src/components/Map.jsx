@@ -1,8 +1,22 @@
 // src/components/Map.jsx
 import {Polyline, Marker } from "react-leaflet";
-import { Icon } from "leaflet";
+
+import MapControls from "./MapControls";
+import ZoomRuler from "./ZoomRuler";
+import { useEffect } from "react";
 
 function Map({ boats, boatsToDraw, boatColors, currentTimeRaceData }) {
+
+  useEffect(() => {
+    // Enable rotation on the map
+    const map = document.querySelector('.leaflet-container')?._leaflet_map;
+    if (map) {
+      map.getBearing(0);
+      map.rotate = true;
+    }
+  }, []);
+
+
   return (
     <>
     
@@ -11,6 +25,8 @@ function Map({ boats, boatsToDraw, boatColors, currentTimeRaceData }) {
           boatData={boats[id]} boatColor={boatColors[id]} currentTimeBoatData={currentTimeRaceData[id]}
         />
       ))}
+      <MapControls />
+      <ZoomRuler />
     </>
   );
 }
